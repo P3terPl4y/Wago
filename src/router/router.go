@@ -22,17 +22,17 @@ func Router(app *fiber.App) {
 		},
 	})
 	app.Get("/", func(c fiber.Ctx) error {
-		return c.SendFile(`./static/index.html`)
+		return c.SendFile(`./src/static/index.html`)
 	})
 	// Rutas públicas
 	app.Get("/sing", func(c fiber.Ctx) error {
 
-		return c.SendFile("./static/sing.html")
+		return c.SendFile("./src/static/sing.html")
 	})
 
 	app.Get("/register", func(c fiber.Ctx) error {
 
-		return c.SendFile("./static/register.html")
+		return c.SendFile("./src/static/register.html")
 	})
 
 	app.Post("/register", limiterMiddleware, handlers.Register)
@@ -83,7 +83,7 @@ func Router(app *fiber.App) {
 
 	// Interfaz principal de administración (con sección de pagos pendientes)
 	adminGroup.Get("/", func(c fiber.Ctx) error {
-		return c.SendFile("static/pay_session.html")
+		return c.SendFile("./src/static/pay_session.html")
 	})
 
 	// Rutas existentes de admin (users, bots, block, delete)

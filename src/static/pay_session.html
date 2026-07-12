@@ -5,423 +5,200 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Administración · Wago</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@400;600;700;800&display=swap"
-        rel="stylesheet" />
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=3" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(145deg, #f6faf6 0%, #eaf5ea 100%);
-            color: #1e2b1e;
-            padding: 24px
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 16px
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px
-        }
-
-        .brand img {
-            height: 40px;
-            width: 40px;
-            border-radius: 50%;
-            object-fit: cover
-        }
-
-        .brand span {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #1e2b1e
-        }
-
-        .brand span small {
-            font-weight: 400;
-            color: #4a5f4a;
-            font-size: 0.9rem
-        }
-
-        .header a {
-            color: #2a7a4a;
-            text-decoration: none;
-            background: #f6faf6;
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid #e2ebe2;
-            transition: all .2s
-        }
-
-        .header a:hover {
-            background: #fff;
-            border-color: #b0c0b0
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border: 1px solid #e2ebe2;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02)
-        }
-
-        .card h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #1e2b1e
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px
-        }
-
-        th {
-            text-align: left;
-            padding: 10px 12px;
-            background: #f6faf6;
-            border-bottom: 2px solid #e2ebe2;
-            font-weight: 600;
-            color: #2a5a3a
-        }
-
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #e2ebe2
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500
-        }
-
-        .badge-active {
-            background: #e8f5e9;
-            color: #2e7d32
-        }
-
-        .badge-inactive {
-            background: #f5f5f5;
-            color: #757575
-        }
-
-        .badge-pending {
-            background: #fff3e0;
-            color: #e65100
-        }
-
-        .badge-paid {
-            background: #e8f5e9;
-            color: #2e7d32
-        }
-
-        .badge-free {
-            background: #e3f2fd;
-            color: #0d47a1
-        }
-
-        .btn {
-            background: #f6faf6;
-            border: 1px solid #e2ebe2;
-            color: #1e2b1e;
-            padding: 6px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all .2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px
-        }
-
-        .btn:hover {
-            background: #fff;
-            border-color: #b0c0b0
-        }
-
-        .btn-primary {
-            background: #2a7a4a;
-            border-color: #2a7a4a;
-            color: #fff
-        }
-
-        .btn-primary:hover {
-            background: #1e5a38;
-            border-color: #1e5a38
-        }
-
-        .btn-danger {
-            background: #e74c3c;
-            border-color: #e74c3c;
-            color: #fff
-        }
-
-        .btn-danger:hover {
-            background: #c0392b;
-            border-color: #c0392b
-        }
-
-        .btn-success {
-            background: #ffd98c;
-            border-color: #ffd98c;
-            color: #1e3a2a
-        }
-
-        .btn-success:hover {
-            background: #ffedc2;
-            border-color: #ffedc2
-        }
-
-        .btn-sm {
-            padding: 4px 10px;
-            font-size: 12px
-        }
-
-        .form-inline {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: center
-        }
-
-        .form-inline input,
-        .form-inline select {
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: #fafcfa;
-            border: 1.5px solid #e2ebe2;
-            color: #1e2b1e;
-            font-family: 'Inter', sans-serif
-        }
-
-        .form-inline input:focus,
-        .form-inline select:focus {
-            outline: none;
-            border-color: #2a7a4a;
-            box-shadow: 0 0 0 3px rgba(42, 122, 74, 0.08)
-        }
-
-        .filters {
-            margin-bottom: 16px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap
-        }
-
-        .filters select,
-        .filters input {
-            padding: 6px 12px;
-            border-radius: 8px;
-            background: #fafcfa;
-            border: 1.5px solid #e2ebe2;
-            color: #1e2b1e
-        }
-
-        .filters select:focus,
-        .filters input:focus {
-            outline: none;
-            border-color: #2a7a4a
-        }
-
-        .table-responsive {
-            overflow-x: auto
-        }
-
-        .status-msg {
-            padding: 10px 16px;
-            border-radius: 10px;
-            margin-top: 12px;
-            display: none
-        }
-
-        .status-msg.success {
-            background: #e8f5e9;
-            border: 1px solid #a5d6a7;
-            color: #2e7d32;
-            display: block
-        }
-
-        .status-msg.error {
-            background: #ffebee;
-            border: 1px solid #ef9a9a;
-            color: #c62828;
-            display: block
-        }
-
-        .status-msg.info {
-            background: #e3f2fd;
-            border: 1px solid #90caf9;
-            color: #0d47a1;
-            display: block
-        }
-
-        .mt-2 {
-            margin-top: 16px
-        }
-
-        .text-muted {
-            color: #4a5f4a;
-            font-size: 13px
-        }
-
-        .gap-2 {
-            gap: 8px
-        }
-
-        .flex {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap
-        }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 16px; padding: 20px 0; }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand img { height: 44px; width: 44px; border-radius: 50%; object-fit: cover; }
+        .brand span { font-size: 1.8rem; font-weight: 700; color: var(--color-text-main); }
+        .brand span small { font-weight: 400; color: var(--color-text-muted); font-size: 1rem; }
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+        .card-header h2 { margin-bottom: 0; font-size: 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .card-header h2 i { background: rgba(16, 185, 129, 0.1); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        
+        .filters { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="brand">
-                <img src="https://copilot.microsoft.com/shares/XsBodgkpbrmLF5JjNvXrA" alt="Wago" />
-                <span>Wago <small>· administración</small></span>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/Copilot_20260709_045019.png" alt="Wago" style="width:36px;height:36px;border-radius:50%;" />
+                <span style="font-size:1.25rem;font-weight:700;color:var(--color-text-main);">Wago <small style="font-weight:400;color:var(--color-text-muted);font-size:0.8rem;">Admin</small></span>
             </div>
-            <div><a href="/dashboard"><i class="fas fa-arrow-left"></i> Volver al Dashboard</a></div>
-        </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-item active"><i class="fas fa-home"></i> Resumen</a>
+                <a href="#bots" class="sidebar-item"><i class="fas fa-robot"></i> Bots</a>
+                <a href="#users" class="sidebar-item"><i class="fas fa-users"></i> Usuarios</a>
+                <a href="#payments" class="sidebar-item"><i class="fas fa-credit-card"></i> Pagos</a>
+            </nav>
+            <div class="sidebar-footer" style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="text-sm text-muted">Ajustes</span>
+                <button class="theme-toggle" id="themeToggleDash" aria-label="Cambiar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar reveal">
+                <div>
+                    <div class="breadcrumb">Inicio <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i> Dashboard</div>
+                    <h1 class="page-title">Dashboard</h1>
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid reveal delay-1">
+                <div class="kpi-card glass-card">
+                    <div class="kpi-icon"><i class="fas fa-users"></i></div>
+                    <div class="kpi-label">Usuarios Totales</div>
+                    <div class="kpi-value" id="kpiUsers">--</div>
+                    <div class="kpi-trend up"><i class="fas fa-arrow-up"></i> +12%</div>
+                </div>
+                <div class="kpi-card glass-card">
+                    <div class="kpi-icon" style="color:var(--color-accent-blue); background:rgba(59,130,246,0.1);"><i class="fas fa-robot"></i></div>
+                    <div class="kpi-label">Bots Activos</div>
+                    <div class="kpi-value" id="kpiBots">--</div>
+                    <div class="kpi-trend up"><i class="fas fa-arrow-up"></i> +5%</div>
+                </div>
+                <div class="kpi-card glass-card">
+                    <div class="kpi-icon" style="color:var(--color-warning); background:var(--color-warning-bg);"><i class="fas fa-credit-card"></i></div>
+                    <div class="kpi-label">Pagos Pendientes</div>
+                    <div class="kpi-value" id="kpiPayments">--</div>
+                    <div class="kpi-trend down"><i class="fas fa-arrow-down"></i> -2%</div>
+                </div>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="premium-card mb-4 reveal delay-1">
+                <div class="premium-card-body">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-line" style="color:var(--color-primary);"></i> Rendimiento</h2>
+                    </div>
+                    <canvas id="performanceChart" height="80"></canvas>
+                </div>
+            </div>
 
         <!-- Pagos pendientes -->
-        <div class="card">
-            <h2><i class="fas fa-credit-card" style="color:#2a7a4a;"></i> Pagos pendientes</h2>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Bot ID</th>
-                            <th>Usuario</th>
-                            <th>Fecha creación</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pendingPaymentsBody">
-                        <tr>
-                            <td colspan="4">Cargando...</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="premium-card mb-4 reveal delay-1">
+            <div class="premium-card-body">
+                <div class="card-header">
+                    <h2><i class="fas fa-credit-card" style="color:var(--color-primary);"></i> Pagos pendientes</h2>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bot ID</th>
+                                <th>Usuario</th>
+                                <th>Fecha creación</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingPaymentsBody">
+                            <tr><td colspan="4">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div id="paymentConfirmStatus" class="status-msg"></div>
         </div>
 
         <!-- Crear bot -->
-        <div class="card">
-            <h2><i class="fas fa-plus-circle" style="color:#2a7a4a;"></i> Crear nuevo bot (gratis)</h2>
-            <div class="form-inline">
-                <label for="createUserId">ID de usuario:</label>
-                <input type="number" id="createUserId" placeholder="ID del usuario" min="1" />
-                <button class="btn btn-success" id="createBotBtn"><i class="fas fa-plus"></i> Crear Bot</button>
+        <div class="premium-card mb-4 reveal delay-2">
+            <div class="premium-card-body">
+                <div class="card-header">
+                    <h2><i class="fas fa-plus-circle" style="color:var(--color-primary);"></i> Crear nuevo bot (gratis)</h2>
+                </div>
+                <div class="flex items-center gap-3" style="flex-wrap:wrap;">
+                    <label for="createUserId" style="font-weight:600; color:var(--color-text-muted);">ID de usuario:</label>
+                    <input type="number" id="createUserId" class="form-control" placeholder="ID del usuario" min="1" style="max-width: 200px;" />
+                    <button class="btn btn-primary" id="createBotBtn"><i class="fas fa-plus"></i> Crear Bot</button>
+                </div>
             </div>
-            <div id="createStatus" class="status-msg"></div>
         </div>
 
         <!-- Usuarios -->
-        <div class="card">
-            <h2><i class="fas fa-users" style="color:#2a7a4a;"></i> Usuarios</h2>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Usuario</th>
-                            <th>Email</th>
-                            <th>Teléfono</th>
-                            <th>Rol</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody">
-                        <tr>
-                            <td colspan="6">Cargando...</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="premium-card mb-4 reveal delay-3">
+            <div class="premium-card-body">
+                <div class="card-header">
+                    <h2><i class="fas fa-users" style="color:var(--color-primary);"></i> Usuarios</h2>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Rol</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="6">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         <!-- Bots -->
-        <div class="card">
-            <h2><i class="fas fa-robot" style="color:#2a7a4a;"></i> Bots</h2>
-            <div class="filters">
-                <label>Filtrar estado:</label>
-                <select id="botFilter">
-                    <option value="all">Todos</option>
-                    <option value="active">Activos</option>
-                    <option value="inactive">Inactivos</option>
-                    <option value="pending">Pendientes de pago</option>
-                </select>
-                <button class="btn btn-sm" id="refreshBotsBtn"><i class="fas fa-sync-alt"></i> Actualizar</button>
-            </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Usuario</th>
-                            <th>Estado</th>
-                            <th>Pago</th>
-                            <th>Bloqueado</th>
-                            <th>Prompt</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="botsTableBody">
-                        <tr>
-                            <td colspan="7">Cargando...</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="premium-card mb-4 reveal delay-3">
+            <div class="premium-card-body">
+                <div class="card-header">
+                    <h2><i class="fas fa-robot" style="color:var(--color-primary);"></i> Bots</h2>
+                </div>
+                <div class="filters">
+                    <label style="font-weight:600; color:var(--color-text-muted);">Filtrar estado:</label>
+                    <select id="botFilter" class="form-control" style="width:auto; min-width: 150px;">
+                        <option value="all">Todos</option>
+                        <option value="active">Activos</option>
+                        <option value="inactive">Inactivos</option>
+                        <option value="pending">Pendientes de pago</option>
+                    </select>
+                    <button class="btn btn-sm btn-secondary" id="refreshBotsBtn"><i class="fas fa-sync-alt"></i> Actualizar</button>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuario</th>
+                                <th>Estado</th>
+                                <th>Pago</th>
+                                <th>Bloqueado</th>
+                                <th>Prompt</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="botsTableBody">
+                            <tr><td colspan="7">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+        </main>
     </div>
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/assets/js/main.js?v=2"></script>
     <script>
-        function showStatus(el, msg, type) {
-            el.className = 'status-msg ' + (type || 'info');
-            el.textContent = msg;
-            el.style.display = 'block';
-        }
-        function hideStatus(el) {
-            el.style.display = 'none';
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => el.classList.add('visible'));
+        });
 
-        // Cargar pagos pendientes
         async function loadPendingPayments() {
             try {
                 const res = await fetch('/admin/bots/status');
@@ -431,42 +208,45 @@
                 if (bots.length > 0) {
                     let html = '';
                     for (let b of bots) {
-                        html += '<tr>' +
-                            '<td>' + b.id + '</td>' +
-                            '<td>' + (b.username || 'Desconocido') + ' (' + b.user_id + ')</td>' +
-                            '<td>' + new Date(b.created_at).toLocaleString() + '</td>' +
-                            '<td><button class="btn btn-success btn-sm" onclick="confirmPayment(' + b.id + ')">✅ Confirmar pago</button></td>' +
-                            '</tr>';
+                        html += `<tr>
+                            <td>${b.id}</td>
+                            <td>${b.username || 'Desconocido'} (${b.user_id})</td>
+                            <td>${new Date(b.created_at).toLocaleString()}</td>
+                            <td><button class="btn btn-solid-green btn-sm" onclick="confirmPayment(${b.id})"><i class="fas fa-check"></i> Confirmar pago</button></td>
+                            </tr>`;
                     }
                     tbody.innerHTML = html;
                 } else {
                     tbody.innerHTML = '<tr><td colspan="4">No hay pagos pendientes</td></tr>';
                 }
+                
+                // Update KPI
+                const totalPending = data.bots ? data.bots.filter(b => b.payment_status === 'pending').length : 0;
+                document.getElementById('kpiPayments').textContent = totalPending;
             } catch (e) {
                 document.getElementById('pendingPaymentsBody').innerHTML = '<tr><td colspan="4">Error al cargar</td></tr>';
             }
         }
 
         window.confirmPayment = async function (botId) {
-            if (!confirm('¿Confirmar pago para el bot ' + botId + '? Se iniciará automáticamente.')) return;
-            const statusEl = document.getElementById('paymentConfirmStatus');
-            hideStatus(statusEl);
+            const isConfirmed = await Modal.confirm('Confirmar Pago', `¿Confirmar pago para el bot ${botId}? Se iniciará automáticamente.`);
+            if (!isConfirmed) return;
+            
             try {
                 const res = await fetch('/admin/payments/confirm/' + botId, { method: 'POST' });
                 const data = await res.json();
                 if (res.ok) {
-                    showStatus(statusEl, '✅ Pago confirmado, bot iniciado.', 'success');
+                    Toast.show('Pago confirmado, bot iniciado.', 'success');
                     loadPendingPayments();
                     loadBots();
                 } else {
-                    showStatus(statusEl, '❌ ' + (data.error || 'Error al confirmar'), 'error');
+                    Toast.show(data.error || 'Error al confirmar', 'error');
                 }
             } catch (e) {
-                showStatus(statusEl, '❌ Error de red', 'error');
+                Toast.show('Error de red', 'error');
             }
         };
 
-        // Cargar usuarios
         async function loadUsers() {
             try {
                 const res = await fetch('/admin/users');
@@ -475,31 +255,36 @@
                 if (data.users && data.users.length > 0) {
                     let html = '';
                     for (let u of data.users) {
-                        html += '<tr>' +
-                            '<td>' + u.id + '</td>' +
-                            '<td>' + u.username + '</td>' +
-                            '<td>' + u.email + '</td>' +
-                            '<td>' + u.phone + '</td>' +
-                            '<td><span class="badge ' + (u.role === 'admin' ? 'badge-active' : '') + '">' + u.role + '</span></td>' +
-                            '<td class="flex gap-2">' +
-                            '<button class="btn btn-primary btn-sm" onclick="changePass(' + u.id + ')">🔑 Cambiar pass</button>' +
-                            (u.role !== 'admin' ? '<button class="btn btn-danger btn-sm" onclick="deleteUser(' + u.id + ')">🗑️ Eliminar</button>' : '') +
-                            '</td>' +
-                            '</tr>';
+                        const adminClass = u.role === 'admin' ? 'badge-active' : 'badge-inactive';
+                        html += `<tr>
+                            <td>${u.id}</td>
+                            <td>${u.username}</td>
+                            <td>${u.email}</td>
+                            <td>${u.phone}</td>
+                            <td><span class="badge ${adminClass}">${u.role}</span></td>
+                            <td class="flex gap-2">
+                                <button class="btn btn-primary btn-sm" onclick="changePass(${u.id})" title="Cambiar Contraseña"><i class="fas fa-key"></i></button>
+                                ${u.role !== 'admin' ? `<button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})" title="Eliminar"><i class="fas fa-trash"></i></button>` : ''}
+                            </td>
+                            </tr>`;
                     }
                     tbody.innerHTML = html;
                 } else {
                     tbody.innerHTML = '<tr><td colspan="6">No hay usuarios</td></tr>';
                 }
+                
+                // Update KPI
+                document.getElementById('kpiUsers').textContent = data.users ? data.users.length : 0;
             } catch (e) {
                 document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="6">Error al cargar usuarios</td></tr>';
             }
         }
 
         window.changePass = async function (userId) {
-            const newPass = prompt('Nueva contraseña (mínimo 6 caracteres):');
+            const newPass = await Modal.prompt('Cambiar Contraseña', 'Ingresa la nueva contraseña (mínimo 6 caracteres):', 'Nueva contraseña');
+            if (newPass === null) return;
             if (!newPass || newPass.length < 6) {
-                alert('La contraseña debe tener al menos 6 caracteres.');
+                Toast.show('La contraseña debe tener al menos 6 caracteres.', 'warning');
                 return;
             }
             try {
@@ -510,30 +295,32 @@
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    alert('Contraseña actualizada correctamente.');
+                    Toast.show('Contraseña actualizada correctamente.', 'success');
                 } else {
-                    alert('Error: ' + (data.error || 'desconocido'));
+                    Toast.show('Error: ' + (data.error || 'desconocido'), 'error');
                 }
             } catch (e) {
-                alert('Error de red');
+                Toast.show('Error de red', 'error');
             }
         };
 
         window.deleteUser = async function (userId) {
-            if (!confirm('¿Eliminar este usuario? Se eliminarán también sus bots.')) return;
+            const isConfirmed = await Modal.confirm('Eliminar Usuario', '¿Eliminar este usuario de forma permanente? Se eliminarán también sus bots.');
+            if (!isConfirmed) return;
+            
             try {
                 const res = await fetch('/admin/users/' + userId, { method: 'DELETE' });
                 if (res.ok) {
-                    alert('Usuario eliminado.');
+                    Toast.show('Usuario eliminado.', 'success');
                     loadUsers();
                     loadBots();
                     loadPendingPayments();
                 } else {
                     const data = await res.json();
-                    alert('Error: ' + (data.error || 'desconocido'));
+                    Toast.show('Error: ' + (data.error || 'desconocido'), 'error');
                 }
             } catch (e) {
-                alert('Error de red');
+                Toast.show('Error de red', 'error');
             }
         };
 
@@ -544,6 +331,7 @@
                 const tbody = document.getElementById('botsTableBody');
                 const filter = document.getElementById('botFilter').value;
                 let bots = data.bots || [];
+                
                 if (filter === 'active') bots = bots.filter(b => b.active);
                 else if (filter === 'inactive') bots = bots.filter(b => !b.active && b.payment_status !== 'pending');
                 else if (filter === 'pending') bots = bots.filter(b => b.payment_status === 'pending');
@@ -558,23 +346,30 @@
                         const blockBadge = b.blocked ? 'badge-blocked' : 'badge-unblocked';
                         const blockText = b.blocked ? 'Bloqueado' : 'Desbloqueado';
                         const promptPreview = b.prompt ? b.prompt.substring(0, 30) + '...' : 'Sin prompt';
-                        html += '<tr>' +
-                            '<td>' + b.id + '</td>' +
-                            '<td>' + (b.username || 'Desconocido') + ' (' + b.user_id + ')</td>' +
-                            '<td><span class="badge ' + statusBadge + '">' + statusText + '</span></td>' +
-                            '<td><span class="badge ' + paymentBadge + '">' + paymentText + '</span></td>' +
-                            '<td><span class="badge ' + blockBadge + '">' + blockText + '</span></td>' +
-                            '<td>' + promptPreview + '</td>' +
-                            '<td class="flex gap-2">' +
-                            '<button class="btn btn-sm ' + (b.blocked ? 'btn-success' : 'btn-danger') + '" onclick="toggleBlock(' + b.id + ', ' + (!b.blocked) + ')">' + (b.blocked ? 'Desbloquear' : 'Bloquear') + '</button>' +
-                            '<button class="btn btn-danger btn-sm" onclick="deleteBot(' + b.id + ')">🗑️</button>' +
-                            '</td>' +
-                            '</tr>';
+                        
+                        html += `<tr>
+                            <td>${b.id}</td>
+                            <td>${b.username || 'Desconocido'} (${b.user_id})</td>
+                            <td><span class="badge ${statusBadge}">${statusText}</span></td>
+                            <td><span class="badge ${paymentBadge}">${paymentText}</span></td>
+                            <td><span class="badge ${blockBadge}">${blockText}</span></td>
+                            <td>${promptPreview}</td>
+                            <td class="flex gap-2">
+                                <button class="btn btn-sm ${b.blocked ? 'btn-primary' : 'btn-danger'}" onclick="toggleBlock(${b.id}, ${!b.blocked})" title="${b.blocked ? 'Desbloquear' : 'Bloquear'}">
+                                    <i class="fas ${b.blocked ? 'fa-unlock' : 'fa-lock'}"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteBot(${b.id})" title="Eliminar"><i class="fas fa-trash"></i></button>
+                            </td>
+                            </tr>`;
                     }
                     tbody.innerHTML = html;
                 } else {
                     tbody.innerHTML = '<tr><td colspan="7">No hay bots con este filtro</td></tr>';
                 }
+                
+                // Update KPI (Active Bots)
+                const activeBots = (data.bots || []).filter(b => b.active).length;
+                document.getElementById('kpiBots').textContent = activeBots;
             } catch (e) {
                 document.getElementById('botsTableBody').innerHTML = '<tr><td colspan="7">Error al cargar bots</td></tr>';
             }
@@ -588,40 +383,41 @@
                     body: JSON.stringify({ blocked: newBlocked })
                 });
                 if (res.ok) {
+                    Toast.show(newBlocked ? 'Bot bloqueado.' : 'Bot desbloqueado.', 'info');
                     loadBots();
                     loadPendingPayments();
                 } else {
                     const data = await res.json();
-                    alert('Error: ' + (data.error || 'desconocido'));
+                    Toast.show('Error: ' + (data.error || 'desconocido'), 'error');
                 }
             } catch (e) {
-                alert('Error de red');
+                Toast.show('Error de red', 'error');
             }
         };
 
         window.deleteBot = async function (botId) {
-            if (!confirm('¿Eliminar este bot?')) return;
+            const isConfirmed = await Modal.confirm('Eliminar Bot', '¿Estás seguro de que deseas eliminar este bot? Esta acción no se puede deshacer.');
+            if (!isConfirmed) return;
+            
             try {
                 const res = await fetch('/admin/bots/' + botId, { method: 'DELETE' });
                 if (res.ok) {
-                    alert('Bot eliminado.');
+                    Toast.show('Bot eliminado correctamente.', 'success');
                     loadBots();
                     loadPendingPayments();
                 } else {
                     const data = await res.json();
-                    alert('Error: ' + (data.error || 'desconocido'));
+                    Toast.show('Error: ' + (data.error || 'desconocido'), 'error');
                 }
             } catch (e) {
-                alert('Error de red');
+                Toast.show('Error de red', 'error');
             }
         };
 
         document.getElementById('createBotBtn').addEventListener('click', async function () {
             const userId = document.getElementById('createUserId').value;
-            const statusEl = document.getElementById('createStatus');
-            hideStatus(statusEl);
             if (!userId || parseInt(userId) <= 0) {
-                showStatus(statusEl, '❌ Ingresa un ID de usuario válido.', 'error');
+                Toast.show('Ingresa un ID de usuario válido.', 'warning');
                 return;
             }
             try {
@@ -632,25 +428,80 @@
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    showStatus(statusEl, '✅ Bot creado con ID ' + data.bot_id + ' para el usuario ' + userId, 'success');
+                    Toast.show('Bot creado con ID ' + data.bot_id + ' para el usuario ' + userId, 'success');
                     document.getElementById('createUserId').value = '';
                     loadBots();
                     loadUsers();
                     loadPendingPayments();
                 } else {
-                    showStatus(statusEl, '❌ ' + (data.error || 'Error al crear bot'), 'error');
+                    Toast.show(data.error || 'Error al crear bot', 'error');
                 }
             } catch (e) {
-                showStatus(statusEl, '❌ Error de red', 'error');
+                Toast.show('Error de red', 'error');
             }
         });
 
         document.getElementById('botFilter').addEventListener('change', loadBots);
-        document.getElementById('refreshBotsBtn').addEventListener('click', function () { loadBots(); loadPendingPayments(); });
+        document.getElementById('refreshBotsBtn').addEventListener('click', function () { 
+            loadBots(); 
+            loadPendingPayments(); 
+            Toast.show('Actualizado', 'info'); 
+        });
 
+        // Init loads
         loadUsers();
         loadBots();
         loadPendingPayments();
+        
+        // Theme Toggle Logic
+        const themeToggleDash = document.getElementById('themeToggleDash');
+        if (themeToggleDash) {
+            const icon = themeToggleDash.querySelector('i');
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            if (currentTheme === 'light') {
+                document.documentElement.classList.add('light-theme');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+            themeToggleDash.addEventListener('click', () => {
+                document.documentElement.classList.toggle('light-theme');
+                if (document.documentElement.classList.contains('light-theme')) {
+                    localStorage.setItem('theme', 'light');
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                }
+            });
+        }
+
+        // Initialize Performance Chart
+        const ctx = document.getElementById('performanceChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                    datasets: [{
+                        label: 'Interacciones',
+                        data: [12, 19, 15, 25, 22, 30, 28],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
     </script>
 </body>
 

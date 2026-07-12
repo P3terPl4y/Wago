@@ -39,7 +39,7 @@ func main() {
 	}))
 	app.Use(middleware.SecurityHeaders)
 	app.Use(global.SessionMW)
-	app.Use(static.New("./static/"))
+	app.Use(static.New("./src/static/"))
 	router.Router(app)
 	// ============================================================
 	// INICIO DEL SERVIDOR

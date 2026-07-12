@@ -63,8 +63,8 @@ func GetContainer(botID int) *sqlstore.Container {
 		}
 		f.Close()
 	}
-	dsn := fmt.Sprintf("file:%s?_journal_mode=WAL&_sync=NORMAL&_foreign_keys=on&_busy_timeout=5000", dbFile)
-	container, err := sqlstore.New(ctx, "sqlite3", dsn, dbLog)
+	dsn := fmt.Sprintf("file:%s?_pragma=journal_mode(WAL)&_pragma=synchronous(NORMAL)&_pragma=foreign_keys(1)&_pragma=busy_timeout(5000)", dbFile)
+	container, err := sqlstore.New(ctx, "sqlite", dsn, dbLog)
 	if err != nil {
 		panic(err)
 	}
