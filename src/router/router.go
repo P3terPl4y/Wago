@@ -27,12 +27,12 @@ func Router(app *fiber.App) {
 	// Rutas públicas
 	app.Get("/sing", func(c fiber.Ctx) error {
 
-		return c.SendFile("sing.html")
+		return c.SendFile("./static/sing.html")
 	})
 
 	app.Get("/register", func(c fiber.Ctx) error {
 
-		return c.SendFile("static/register.html")
+		return c.SendFile("./static/register.html")
 	})
 
 	app.Post("/register", limiterMiddleware, handlers.Register)
