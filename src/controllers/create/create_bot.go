@@ -81,36 +81,48 @@ func InitBot(botID int, qrResult chan<- string) {
 	client.AddEventHandler(func(evt interface{}) {
 		switch v := evt.(type) {
 		case *events.Message:
-			bot, err := get.GetBotByID(botID)
-			if err != nil || bot == nil || bot.Blocked {
-				fmt.Printf("⛔ [Bot %d] Bloqueado o eliminado, ignorando mensaje\n", botID)
+			// 1. Ignorar mensajes de protocolo (sistema, sincronización)
+			if v.Message.GetProtocolMessage() != nil {
+				fmt.Printf("📩 [Bot %d] Mensaje de protocolo ignorado\n", botID)
 				return
 			}
+
+			// 2. Ignorar mensajes de grupos (si no quieres atender grupos)
+			if v.Info.IsGroup {
+				fmt.Printf("📩 [Bot %d] Mensaje de grupo ignorado\n", botID)
+				return
+			}
+
+			// 3. Obtener el texto del mensaje
+			text := v.Message.GetConversation()
+			if text == "" {
+				// No enviar respuesta automática, solo loguear
+				fmt.Printf("📩 [Bot %d] Mensaje sin texto de %s, ignorado\n", botID, v.Info.Sender.ToNonAD())
+				return
+			}
+
+			// 4. Verificar que el mensaje no sea de nosotros mismos (ya está hecho)
 			if v.Info.IsFromMe {
 				return
 			}
 
-			// Obtener el JID sin dispositivo (correcto)
+			// 5. Verificar que el bot no esté bloqueado (ya está hecho)
+			bot, err := get.GetBotByID(botID)
+			if err != nil || bot == nil || bot.Blocked {
+				fmt.Printf("⛔ [Bot %d] Bot bloqueado o eliminado, ignorando mensaje\n", botID)
+				return
+			}
+
+			// Ahora procesamos el mensaje
 			senderJID := v.Info.Sender.ToNonAD()
-			text := v.Message.GetConversation()
-			fmt.Printf("📩 [Bot %d] Mensaje de %s\n", botID, senderJID)
+			fmt.Printf("📩 [Bot %d] Mensaje de %s: %s\n", botID, senderJID, text)
 
-			go func(msg *events.Message, recipient types.JID) {
-				if text == "" {
-					respuesta := "📎 Solo puedo procesar texto. Escríbeme algo."
-					_, err := client.SendMessage(context.Background(), recipient, &waE2E.Message{
-						Conversation: &respuesta,
-					})
-					if err != nil {
-						fmt.Printf("❌ [Bot %d] Error enviando respuesta a %s: %v\n", botID, recipient, err)
-					}
-					return
-				}
-
+			go func(msg *events.Message, recipient types.JID, txt string) {
 				// Guardar historial
-				if err := save.SaveChatMessage(botID, recipient.String(), "user", text); err != nil {
+				if err := save.SaveChatMessage(botID, recipient.String(), "user", txt); err != nil {
 					fmt.Printf("❌ [Bot %d] Error guardando historial: %v\n", botID, err)
 				}
+
 				history, err := get.GetChatHistory(botID, recipient.String(), global.MAX_HISTORY)
 				if err != nil {
 					history = []models.ChatMessage{}
@@ -128,7 +140,7 @@ func InitBot(botID int, qrResult chan<- string) {
 						promptBuilder.WriteString("Asistente: " + m.Content + "\n")
 					}
 				}
-				promptBuilder.WriteString("Usuario: " + text + "\n")
+				promptBuilder.WriteString("Usuario: " + txt + "\n")
 
 				respuestaIA, err := ai.CallAI(promptBuilder.String())
 				if err != nil {
@@ -140,7 +152,6 @@ func InitBot(botID int, qrResult chan<- string) {
 					fmt.Printf("❌ [Bot %d] Error guardando respuesta: %v\n", botID, err)
 				}
 
-				// Enviar respuesta usando el JID limpio (ya es un types.JID)
 				_, err = client.SendMessage(context.Background(), recipient, &waE2E.Message{
 					Conversation: &respuestaIA,
 				})
@@ -149,7 +160,7 @@ func InitBot(botID int, qrResult chan<- string) {
 				} else {
 					fmt.Printf("✅ [Bot %d] Respuesta enviada a %s\n", botID, recipient)
 				}
-			}(v, senderJID) // ... resto de eventos (Disconnected, StreamReplaced) sin cambios
+			}(v, senderJID, text) // ... resto de eventos (Disconnected, StreamReplaced) sin cambios
 		}
 	})
 

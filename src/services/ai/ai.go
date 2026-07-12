@@ -209,7 +209,7 @@ type ChatResponse struct {
 // Preguntar usa el servidor local de go-pherence para generar una respuesta.
 func Preguntar(prompt string) (string, error) {
 	reqBody := ChatRequest{
-		Model: "local-model", // cualquier nombre, el servidor usará el que cargó
+		Model: "qwen3-0.6b", // cualquier nombre, el servidor usará el que cargó
 		Messages: []ChatMessage{
 			{Role: "user", Content: prompt},
 		},
