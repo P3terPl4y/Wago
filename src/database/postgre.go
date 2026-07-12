@@ -11,6 +11,8 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/session"
 	"github.com/gofiber/storage/redis/v3"
+	_ "github.com/lib/pq" // PostgreSQL
+	_ "github.com/mattn/go-sqlite3"
 	"golang.org/x/crypto/bcrypt"
 )
 
