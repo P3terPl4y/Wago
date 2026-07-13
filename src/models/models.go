@@ -25,3 +25,11 @@ type ChatMessage struct {
 	Role    string
 	Content string
 }
+type Agenda struct {
+	ID        int
+	UserID    int
+	Name      string
+	Date      string
+	Body      string
+	CreatedAt time.Time
+}

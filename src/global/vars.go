@@ -9,15 +9,15 @@ import (
 	"github.com/gofiber/fiber/v3"
 	goredis "github.com/redis/go-redis/v9"
 	"go.mau.fi/whatsmeow/store/sqlstore"
+	"golang.org/x/oauth2"
 )
 
 // WaapiBase es la URL base de la API de WAAPI.
 // WaapiToken se lee desde la variable de entorno WAAPI_TOKEN.
 var (
-	WaapiBase  = "https://waapi.app/api/v1/instances"
-	WaapiToken = getEnvOrDefault("WAAPI_TOKEN", "")
-	IaURL      = "https://apifreellm.com/api/v1/chat"
-	IaKey      = getEnvOrDefault("LEGACY_API_KEY", "")
+	GoogleOAuthConfig *oauth2.Config
+	IaURL             = "https://apifreellm.com/api/v1/chat"
+	IaKey             = getEnvOrDefault("LEGACY_API_KEY", "")
 )
 
 // getEnvOrDefault retorna el valor de la variable de entorno o un valor por defecto.
@@ -121,8 +121,8 @@ func (c *promptCache) Invalidate(botID int) {
 // ============================================================
 
 type userSemaphore struct {
-	mu      sync.Mutex
-	active  map[string]bool
+	mu     sync.Mutex
+	active map[string]bool
 }
 
 var UserSem = &userSemaphore{

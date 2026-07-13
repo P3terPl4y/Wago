@@ -30,3 +30,6 @@ func CreateBot(userID int, sessionFile string, paymentStatus string) (int, error
 		RETURNING id`, userID, sessionFile, paymentStatus).Scan(&id)
 	return id, err
 }
+func CreateCita(cita *models.Agenda) error {
+	return nil
+}

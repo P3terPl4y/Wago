@@ -29,7 +29,9 @@ func Router(app *fiber.App) {
 
 		return c.SendFile("./src/static/sing.html")
 	})
-
+	// Autenticación con Google
+	app.Get("/auth/google/login", handlers.GoogleLogin)
+	app.Get("/auth/google/callback", handlers.GoogleCallback)
 	app.Get("/register", func(c fiber.Ctx) error {
 
 		return c.SendFile("./src/static/register.html")

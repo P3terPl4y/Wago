@@ -12,23 +12,25 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/session"
 	"github.com/gofiber/storage/redis/v3"
+
 	_ "github.com/lib/pq" // PostgreSQL
-	_ "modernc.org/sqlite"
 	"golang.org/x/crypto/bcrypt"
+	_ "modernc.org/sqlite"
 )
 
 func InitDB() {
+
 	var err error
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
 		log.Fatal("❌ La variable de entorno DATABASE_URL es obligatoria")
 	}
-	
+
 	driver := "postgres"
 	if strings.HasPrefix(dbURL, "sqlite") || strings.HasSuffix(dbURL, ".db") {
 		driver = "sqlite"
 	}
-	
+
 	global.ConfigDB, err = sql.Open(driver, dbURL)
 	if err != nil {
 		log.Fatalf("❌ Error conectando a PostgreSQL: %v", err)
@@ -74,7 +76,17 @@ func InitDB() {
 			role TEXT NOT NULL,
 			content TEXT NOT NULL,
 			created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-		);`
+		);
+		
+		
+CREATE TABLE IF NOT EXISTS oauth_tokens (
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    provider TEXT NOT NULL,
+    refresh_token TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, provider)
+);`
 	} else {
 		createTables = `
 		CREATE TABLE IF NOT EXISTS users (
@@ -116,7 +128,7 @@ func InitDB() {
 	if err != nil {
 		log.Fatalf("❌ Error creando tablas: %v", err)
 	}
-	
+
 	// Migrar bots existentes (añadir columna si no existe, solo si es postgres)
 	if driver == "postgres" {
 		_, _ = global.ConfigDB.Exec(`ALTER TABLE bots ADD COLUMN IF NOT EXISTS payment_status TEXT DEFAULT 'free'`)
