@@ -40,13 +40,13 @@ func GoogleCallback(c fiber.Ctx) error {
 	}
 
 	code := c.Query("code")
-	token, err := global.GoogleOAuthConfig.Exchange(c.ClientHelloInfo().Context(), code)
+	token, err := global.GoogleOAuthConfig.Exchange(c, code)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Error al obtener token: " + err.Error()})
 	}
 
 	// Obtener datos del usuario
-	client := global.GoogleOAuthConfig.Client(c.ClientHelloInfo().Context(), token)
+	client := global.GoogleOAuthConfig.Client(c, token)
 	resp, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Error al obtener datos: " + err.Error()})
