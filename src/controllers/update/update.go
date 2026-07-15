@@ -2,7 +2,8 @@ package update
 
 import (
 	"App/src/global"
-
+"fmt"
+"App/src/database"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -28,13 +29,13 @@ func UpdateUserPhone(userID int, newPhone string) error {
         return fmt.Errorf("el teléfono no puede estar vacío")
     }
     var count int
-    err := configDB.QueryRow(`SELECT COUNT(*) FROM users WHERE phone = $1 AND id != $2`, newPhone, userID).Scan(&count)
+    err := global.configDB.QueryRow(`SELECT COUNT(*) FROM users WHERE phone = $1 AND id != $2`, newPhone, userID).Scan(&count)
     if err != nil {
         return err
     }
     if count > 0 {
         return fmt.Errorf("el número de teléfono ya está registrado por otro usuario")
     }
-    _, err = configDB.Exec(`UPDATE users SET phone = $1 WHERE id = $2`, newPhone, userID)
+    _, err = global.configDB.Exec(`UPDATE users SET phone = $1 WHERE id = $2`, newPhone, userID)
     return err
 }
