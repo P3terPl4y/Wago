@@ -12,6 +12,7 @@ import (
 	"os"
 
 	//"os"
+	"go.mau.fi/whatsmeow/types/events"
 	waLog "go.mau.fi/whatsmeow/util/log"
 
 	"github.com/gofiber/fiber/v3"
@@ -20,10 +21,9 @@ import (
 	"go.mau.fi/whatsmeow"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
-	
-    // ... tus imports existentes ...
-    "time"
 
+	// ... tus imports existentes ...
+	"time"
 )
 
 func init() {
@@ -44,7 +44,6 @@ func init() {
 // SERVIDOR WEB
 // ============================================================
 func startAdminBot() {
-	// Obtener usuario admin
 	adminUser, err := get.GetUserByUsername(global.ADMIN_USERNAME)
 	if err != nil || adminUser == nil {
 		log.Println("⚠️ No se encontró usuario admin")
@@ -58,13 +57,17 @@ func startAdminBot() {
 	adminBot := bots[0]
 
 	go func() {
+		backoff := 5 * time.Second
+		const maxBackoff = 2 * time.Minute
+
 		for {
 			ctx := context.Background()
 			container := get.GetContainer(adminBot.ID)
 			deviceStore, err := container.GetFirstDevice(ctx)
-			if err != nil {
+			if err != nil || deviceStore == nil {
 				log.Printf("❌ Admin bot: error obteniendo dispositivo: %v", err)
-				time.Sleep(10 * time.Second)
+				time.Sleep(backoff)
+				backoff = min(backoff*2, maxBackoff)
 				continue
 			}
 
@@ -73,33 +76,53 @@ func startAdminBot() {
 
 			if err := client.Connect(); err != nil {
 				log.Printf("❌ Admin bot: error conectando: %v", err)
-				time.Sleep(10 * time.Second)
+				time.Sleep(backoff)
+				backoff = min(backoff*2, maxBackoff)
 				continue
 			}
 
-			// Guardar en global
-			global.AdminBotClient = client
-			if client.Store.ID != nil {
-				global.AdminJID = *client.Store.ID
-				log.Printf("✅ Admin bot activo como %s", global.AdminJID)
-			} else {
-				log.Println("⚠️ Admin bot: no se pudo obtener el JID")
+			if client.Store.ID == nil {
+				log.Println("⚠️ Admin bot: sesión inválida, esperando 1 minuto...")
+				time.Sleep(60 * time.Second)
+				continue
 			}
 
-			// Mantener la goroutine viva y verificar conexión cada 30 segundos
-			// Si la conexión se cae, el bucle exterior lo detectará al reintentar
-			time.Sleep(30 * time.Second)
+			// Guardar en variables globales
+			global.AdminBotClient = client
+			global.AdminJID = *client.Store.ID
+			log.Printf("✅ Admin bot activo como %s", global.AdminJID)
+
+			// Esperar hasta que se desconecte (esto bloquea la goroutine)
+			// Si no existe WaitUntilDisconnected, usa el evento Disconnected
+			disconnected := make(chan bool)
+			client.AddEventHandler(func(evt interface{}) {
+				if _, ok := evt.(*events.Disconnected); ok {
+					log.Println("⚠️ Admin bot desconectado")
+					close(disconnected)
+				}
+			})
+
+			// Bloquear hasta que ocurra una desconexión
+			<-disconnected
+			log.Println("⚠️ Admin bot desconectado. Reconectando en 2 segundos...")
+			time.Sleep(2 * time.Second)
 		}
 	}()
+}
+
+func min(a, b time.Duration) time.Duration {
+	if a < b {
+		return a
+	}
+	return b
 }
 func main() {
 	database.InitDB()
 	// Obtener el usuario admin
-	 
-			// Iniciar el bot del admin en segundo plano y capturar el cliente
-			go startAdminBot()
-		
-	
+
+	// Iniciar el bot del admin en segundo plano y capturar el cliente
+	go startAdminBot()
+
 	app := fiber.New(fiber.Config{
 		TrustProxy: true,
 		ErrorHandler: func(c fiber.Ctx, err error) error {
