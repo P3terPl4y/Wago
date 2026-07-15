@@ -8,14 +8,14 @@ import (
 )
 
 func Dashboard(c fiber.Ctx) error {
-app.Get("/dashboard", authRequired, func(c fiber.Ctx) error {
+
 	userID := c.Locals("user_id").(int)
 	role := c.Locals("role").(string)
-	user, err := getUserByID(userID)
+	user, err := get.GetUserByID(userID)
 	if err != nil || user == nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Usuario no encontrado"})
 	}
-	bots, err := getBotsByUser(userID)
+	bots, err := get.GetBotsByUser(userID)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Error al obtener bots"})
 	}
@@ -30,7 +30,7 @@ app.Get("/dashboard", authRequired, func(c fiber.Ctx) error {
 		botID = bot.ID
 		paymentStatus = bot.PaymentStatus
 		botInfo = fmt.Sprintf("Bot ID: %d | Bloqueado: %v | Pago: %s", bot.ID, bot.Blocked, bot.PaymentStatus)
-		prompt, _ := GetPrompt(bot.ID)
+		prompt, _ := get.GetPrompt(bot.ID)
 		currentPrompt = prompt
 	}
 
@@ -411,4 +411,4 @@ app.Get("/dashboard", authRequired, func(c fiber.Ctx) error {
 
 	c.Set("Content-Type", "text/html")
 	return c.SendString(html)
-})
+}
